@@ -1,0 +1,28 @@
+{
+	"name": "SE3313-Final-Project",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index",
+		"dev": "nodemon index",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/liamSharkey/SE3313-Final-Project.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/liamSharkey/SE3313-Final-Project/issues"
+	},
+	"homepage": "https://github.com/liamSharkey/SE3313-Final-Project#readme",
+	"dependencies": {
+		"socket.io": "^4.4.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
