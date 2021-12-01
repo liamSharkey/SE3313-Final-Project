@@ -9,6 +9,7 @@ app.set('view engine', 'ejs')
 app.use(express.static('client'))
 app.use(express.urlencoded({ extended: true }))
 
+//list of users
 const rooms = { }
 
 app.get('/', (req, res) => {
@@ -40,11 +41,13 @@ io.on('connection', socket => {
     socket.join(room)
     rooms[room].users[socket.id] = name
     //uses broadcast to let everybody know user connected along with uses username
-    //'user-connected' handled on client
+    //'user-connected' handled on client passes the name variable
     socket.to(room).broadcast.emit('user-connected', name)
   })
   //gets the room and message variables and then sends it
   socket.on('send-chat-message', (room, message) => {
+      //sends the message to everyone in the room besides the user who sent it, without the room it would sent it to everybody.
+      //
     socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] })
   })
 
