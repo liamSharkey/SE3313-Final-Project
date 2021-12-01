@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
+//creates a server on the port server
 const io = require('socket.io')(server)
 
 app.set('views', './views')
@@ -32,24 +33,33 @@ app.get('/:room', (req, res) => {
 })
 
 server.listen(3000)
-
+//makes every user have thier own socket
 io.on('connection', socket => {
   socket.on('new-user', (room, name) => {
+      //joins the room
     socket.join(room)
     rooms[room].users[socket.id] = name
+    //uses broadcast to let everybody know user connected along with uses username
+    //'user-connected' handled on client
     socket.to(room).broadcast.emit('user-connected', name)
   })
+  //gets the room and message variables and then sends it
   socket.on('send-chat-message', (room, message) => {
     socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] })
   })
+
+  //uses broadcast to let everybody know user disconnected along with uses username
+  //'user-disconnected' handled on client
   socket.on('disconnect', () => {
     getUserRooms(socket).forEach(room => {
       socket.to(room).broadcast.emit('user-disconnected', rooms[room].users[socket.id])
+      //delets the user from the array of objects
       delete rooms[room].users[socket.id]
     })
   })
 })
 
+//
 function getUserRooms(socket) {
   return Object.entries(rooms).reduce((names, [name, room]) => {
     if (room.users[socket.id] != null) names.push(name)
