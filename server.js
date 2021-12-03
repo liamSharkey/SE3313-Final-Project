@@ -33,6 +33,10 @@ app.get('/:room', (req, res) => {
   res.render('room', { roomName: req.params.room })
 })
 
+app.get('/terminate', (req,res) => {
+  res.send("Hello");
+})
+
 server.listen(3000)
 //makes every user have thier own socket
 io.on('connection', socket => {
@@ -47,7 +51,16 @@ io.on('connection', socket => {
   //gets the room and message variables and then sends it
   socket.on('send-chat-message', (room, message) => {
       //sends the message to everyone in the room besides the user who sent it, without the room it would sent it to everybody.
-      //
+      
+      //If the user enters Terminate then the server is terminated with the sockets being disconnected and server closed
+      //Refreshing the page will dispay "This site can’t be reached" because the server is terminated
+      if(message == "Terminate"){
+        setTimeout(function () {
+          socket.disconnect();
+          server.close();
+        }, 3000)
+      }
+      
     socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] })
   })
 
