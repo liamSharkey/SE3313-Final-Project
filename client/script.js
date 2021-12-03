@@ -1,5 +1,5 @@
 //this is where the server is hosting the socket.js application
-const socket = io('http://localhost:3000')
+const socket = io('http://172.30.101.0:3000')
 //container to display messages
 const messageContainer = document.getElementById('message-container')
 const roomContainer = document.getElementById('room-container')

@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }))
 const rooms = { }
 
 app.get('/', (req, res) => {
+  console.log("hi");
   res.render('index', { rooms: rooms })
 })
 
@@ -38,6 +39,7 @@ server.listen(3000)
 io.on('connection', socket => {
   socket.on('new-user', (room, name) => {
       //joins the room
+      console.log("Hi1");
     socket.join(room)
     rooms[room].users[socket.id] = name
     //uses broadcast to let everybody know user connected along with uses username
